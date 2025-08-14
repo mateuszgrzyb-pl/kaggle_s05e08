@@ -19,12 +19,12 @@ The goal is to evaluate whether deep learning can outperform well-established st
 - Output predictions ready for Kaggle submission.
 
 ## Project Structure
-* data/in - Raw input datasets
-* data/out - Model predictions
-* models - Scripts for modeling and EDA
-* tools/base - Data loading and splitting
-* tools/preprocessing - Preprocessing functions
-* tools/feature_selection - Feature selection methods
+* `data/in` - raw input datasets
+* `data/out` - model predictions
+* `models` - scripts for modeling and EDA
+* `tools/base` - data loading and splitting
+* `tools/preprocessing` - preprocessing functions
+* `tools/feature_selection` - feature selection methods
 
 ## Results
 | Model File | Model Description | CV Score | Validation Score | Public Score | Training Date | Notes / Key Observations |
