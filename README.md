@@ -3,7 +3,8 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-Experiments in applying advanced machine learning techniques — from traditional credit risk modeling to modern deep learning architectures — on tabular data from the [Kaggle Playground Series](https://www.kaggle.com/competitions/playground-series-s5e8) (Season 5, Episode 8).
+Experiments in applying advanced machine learning techniques — from the fully interpretable traditional "banking approach" (using classical statistical methods) to modern deep learning architectures — on tabular data from the [Kaggle Playground Series](https://www.kaggle.com/competitions/playground-series-s5e8) (Season 5, Episode 8).
+
 
 ## Overview
 This project compares:
