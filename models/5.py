@@ -1,13 +1,13 @@
 # %% 1. Wczytanie bibliotek.
+import copy
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-import copy
 
 import torch
-import torch.optim as optim
 import torch.nn as nn
+import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 from torchmetrics.classification import AUROC
 
@@ -96,9 +96,9 @@ for epoch in range(num_of_epoch):
             pred = model(X)
             all_preds.append(pred)
             all_targets.append(y)
-    pred_va = torch.cat(all_preds)
-    y_va = torch.cat(all_targets)
-    score_va = auroc(pred_va, y_va)
+    pred_va_tensor = torch.cat(all_preds)
+    y_va_tensor = torch.cat(all_targets)
+    score_va = auroc(pred_va_tensor, y_va_tensor)
     scheduler.step(score_va)
     print('VA score:', round(score_va.item(),4))
 
@@ -118,9 +118,17 @@ for epoch in range(num_of_epoch):
 print(f"\nTrening zakończony. Najlepszy wynik walidacyjny (VA score): {best_score:.4f}")
 
 # %% 7. Predykcja
-with torch.no_grad():
-    pred_te = model(torch.tensor(X_te))
+if best_model_weights:
+    print("Wczytuję wagi najlepszego modelu do predykcji.")
+    model.load_state_dict(best_model_weights)
+else:
+    print("Uwaga: Nie znaleziono najlepszych wag, używam modelu z ostatniej epoki.")
 
-pred_te = np.array(pred_te.tolist()).reshape(1, -1)[0]
+model.eval()
+with torch.no_grad():
+    X_te_tensor = torch.tensor(X_te, dtype=torch.float32).to(device)
+    pred_te = model(X_te_tensor)
+
+pred_te = pred_te.cpu().numpy().flatten()
 pd.DataFrame({'id': test.index, 'y': pred_te}).to_csv('data/out/5.csv', index=False)
 
