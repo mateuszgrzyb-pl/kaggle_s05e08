@@ -31,7 +31,7 @@ preprocessor = ColumnTransformer(
         ("ohe", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_features),
         ("norm", StandardScaler(), numerical_features)
     ],
-    remainder="passthrough"  # reszta kolumn bez zmian
+    remainder="passthrough"
 )
 
 preprocessor.fit(X_tr)
@@ -105,16 +105,12 @@ for epoch in range(num_of_epoch):
     if score_va > best_score:
         best_score = score_va.item()
         epochs_no_improve = 0
-        # Zapisujemy wagi najlepszego modelu, bo to jest nowa najlepsza epoka
         best_model_weights = copy.deepcopy(model.state_dict())
         print(f"Nowy najlepszy wynik! Licznik cierpliwości zresetowany.")
     else:
         epochs_no_improve += 1
         print(f"Brak poprawy. Licznik cierpliwości: {epochs_no_improve}/{patience}")
 
-    print('') # Dodatkowa linia dla czytelności
-
-    # Sprawdzamy, czy licznik cierpliwości osiągnął limit
     if epochs_no_improve >= patience:
         print(f"Przerwanie treningu. Brak poprawy przez {patience} epok.")
         break
@@ -126,6 +122,5 @@ with torch.no_grad():
     pred_te = model(torch.tensor(X_te))
 
 pred_te = np.array(pred_te.tolist()).reshape(1, -1)[0]
-
 pd.DataFrame({'id': test.index, 'y': pred_te}).to_csv('data/out/5.csv', index=False)
 
